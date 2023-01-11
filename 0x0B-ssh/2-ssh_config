@@ -1,0 +1,8 @@
+# Configure ssh client so that you can connect to a server without typing a pawssword.
+Host *
+    SendEnv LAND LC_*
+    HashKnwonHosts yes
+    GSSAPIAuthentication yes
+    GSSAPIDelegateCredentials no
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
