@@ -11,7 +11,7 @@ file_line { 'homepage':
 }
 
 file { '/var/www/html/index.nginx-debian.html':
-  content => 'Holberton School',
+  content => 'Hello World!',
 }
 
 service { 'nginx':
