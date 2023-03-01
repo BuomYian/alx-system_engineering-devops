@@ -11,12 +11,13 @@ def number_of_subscribers(subreddit):
     return 0 if invalid subreddit given
     """
     url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    userAgent = "Mozilla/5.0"
 
-    headers = requests.utils.default_headers()
-    headers.update({'User-Agent': 'My User Agent 1.0'})
-
-    r = requests.get(url, headers=headers).json()
-    subscribers = r.get('data', {}).get('subscribers')
-    if not subscribers:
+    response = requests.get(url, headers={"user-agent":userAgent})
+    if not response:
         return 0
-    return subscribers
+    retValue = response.json().get('data').get('subcribers')
+    if retValue:
+        return retValue
+    else:
+        return 0
