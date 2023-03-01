@@ -6,20 +6,18 @@ import requests
 
 
 def top_ten(subreddit):
-    """
-        return top ten titles for a given subreddit
-        return None if invalid subreddit given
-    """
-    # get user agent
-    # https://stackoverflow.com/questions/10606133/ -->
-    # sending-user-agent-using-requests-library-in-python
-    headers = requests.utils.default_headers()
-    headers.update({'User-Agent': 'My User Agent 1.0'})
+    """Function that fetches top 10 gists"""
+    apiUrl = "https://reddit.com/r/{}/hot.json".format(subreddit)
+    userAgent = "Mozilla/5.0"
+    limits = 10
 
-    url = "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit)
-    r = requests.get(url, headers=headers).json()
-    top_ten = r.get('data', {}).get('children', [])
-    if not top_ten:
-        print(None)
-    for t in top_ten:
-        print(t.get('data').get('title'))
+    response = requests.get(
+        apiUrl, headers={"user-agent": userAgent}, params={"limit": limits})
+    if not response:
+        print('None')
+        return
+    response = response.json()
+    list_obj = response['data']['children']
+    for obj in list_obj:
+        print(obj['data']['title'])
+    return
