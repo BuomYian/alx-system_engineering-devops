@@ -1,27 +1,29 @@
 #!/usr/bin/env bash
-# Installs nginx with 404 Error page
-
-sudo apt-get -y update
+# Install Nginx
+sudo apt-get update
 sudo apt-get -y install nginx
 
-sudo mkdir /etc/nginx/html
-sudo touch /etc/nginx/html/index.html
-sudo echo "Hello world!" > /etc/nginx/html/index.html
-sudo touch /etc/nginx/html/404.html
-echo "Ceci n'est pas une page" > /etc/nginx/html/404.html
-printf %s "server {
-    listen 80;
-    listen [::]:80 default_server;
-    root   /etc/nginx/html;
-    index  index.html index.html;
-    location /redirect_me {
-        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
-    }
-    error_page 404 /404.html;
-    location /404 {
-      root /etc/nginx/html;
-      internal;
-    }
-}" > /etc/nginx/sites-available/default
+# Configure redirect from /redirect_me to another page
+echo "location /redirect_me {
+        return 301 https://www.youtube.com/;
+}" | sudo tee /etc/nginx/sites-available/redirect_me
 
-service nginx restart
+# Configure custom 404 page
+echo "server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        server_name _;
+        error_page 404 /404.html;
+        location = /404.html {
+                internal;
+                root /etc/nginx/html;
+                echo 'Ceci n\'est pas une page';
+        }
+}" | sudo tee /etc/nginx/sites-available/custom_404
+
+# Enable the sites
+sudo ln -s /etc/nginx/sites-available/redirect_me /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/custom_404 /etc/nginx/sites-enabled/
+
+# Restart Nginx
+sudo service nginx restart
