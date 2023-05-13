@@ -1,11 +1,22 @@
 #!/usr/bin/env bash
-# Configure a 301 permanent reidrection
+# Update package list
+sudo apt-get update
 
-sudo apt-get -y update
-sudo apt-get -y upgrade
-sudo apt-get -y install nginx
-sudo service nginx start
-dest="\\\trewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
-sudo sed -i "22i $dest" /etc/nginx/sites-available/default
+# Install Nginx
+sudo apt-get install -y nginx
+
+# Configure Nginx to redirect /redirect_me to another page with a 301 status code
+sudo bash -c 'cat > /etc/nginx/sites-available/default <<EOF
+server {
+    listen 80;
+    location /redirect_me {
+        return 301 https://www.youtube.com;
+    }
+    location / {
+        return 200 "Hello World!";
+    }
+}
+EOF'
+
+# Restart Nginx
 sudo service nginx restart
-sudo service nginx reload
