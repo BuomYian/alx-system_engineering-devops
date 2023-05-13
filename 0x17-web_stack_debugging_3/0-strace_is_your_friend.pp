@@ -1,23 +1,17 @@
-# Install Apache
-package { 'apache2':
-  ensure => installed,
-}
+# Puppet code to fix Apache 500 error caused by missing or incorrect permissions for class-wp-locale.php file
+# Attach strace to the Apache process and run curl to identify the issue
+# This Puppet code ensures the class-wp-locale.php file is present with correct permissions
 
-# Start Apache
-service { 'apache2':
-  ensure => running,
-  enable => true,
-}
+# Define variables for the WordPress directory and class-wp-locale.php file
+$wordpress_dir = '/var/www/html'
+$wp_locale_file = 'class-wp-locale.php'
+$wp_locale_path = "${wordpress_dir}/wp-includes/${wp_locale_file}"
 
-# Create PHP file
-file { '/var/www/html/test.php':
-  content => "<?php echo 'Hello World'; ?>\n",
-}
-
-# Set permissions
-file { '/var/www/html':
-  ensure => 'directory',
-  mode => '0755',
-  recurse => true,
-  require => File['/var/www/html/test.php'],
+# Use Puppet's file resource to ensure the class-wp-locale.php file is present and has correct permissions
+file { $wp_locale_path:
+  ensure => present,
+  source => "${wordpress_dir}/wp-includes/${wp_locale_file}",
+  owner  => 'www-data',
+  group  => 'www-data',
+  mode   => '0644',
 }
