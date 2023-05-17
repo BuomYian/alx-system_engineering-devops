@@ -43,5 +43,5 @@ frontend linuxtechi-frontend
 
 backend web-servers
     balance roundrobin
-    server 76965-web-01 34.229.137.248:80 check
-    server 76965-web-02 54.90.44.124:80 check
+    server 76965-web-01 34.224.94.59:80 check
+    server 76965-web-02 54.160.91.8:80 check
