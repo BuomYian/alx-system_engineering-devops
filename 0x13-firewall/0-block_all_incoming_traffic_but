@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #Configure FIREWALL allowing only ssh http and https
 
 sudo apt-get install ufw
