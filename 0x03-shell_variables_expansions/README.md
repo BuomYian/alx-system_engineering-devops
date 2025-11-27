@@ -118,10 +118,3 @@ Adds two numbers encoded in custom bases (`water` and `stir`) and prints the res
 - Avoid publishing solutions publicly.
 
 ---
-
-If you'd like, I can also:
-
-- Add usage examples
-- Add installation/setup instructions
-- Expand documentation per script
-- Format this README in a more advanced style (tables, badges, etc.)
